@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sort"
 	"strings"
 	"time"
 )
@@ -58,7 +59,7 @@ func getTokens(flags Flags) []Token {
 			continue
 		}
 
-		dateString, err := time.Parse("2006-01-02T15:04:05", strings.Split(token.Expiration, ".")[0])
+		expirationDate, err := time.Parse("2006-01-02 15:04:05", token.Expiration.Format("2006-01-02 15:04:05"))
 
 		if err != nil {
 			log.Fatal(err)
@@ -67,7 +68,7 @@ func getTokens(flags Flags) []Token {
 		tokenFormatted := Token{
 			DisplayName:    token.DisplayName,
 			IsValid:        token.IsValid,
-			Expiration:     dateString.Format("2006-01-02 15:04:05"),
+			Expiration:     expirationDate,
 			Scope:          token.Scope,
 			TargetAccounts: token.TargetAccounts,
 		}
@@ -79,6 +80,10 @@ func getTokens(flags Flags) []Token {
 		}
 	}
 
+	sort.Slice(filteredTokens, func(i, j int) bool {
+		return filteredTokens[i].Expiration.Before(filteredTokens[j].Expiration)
+	})
+
 	return filteredTokens
 }
 
@@ -88,9 +93,9 @@ type RootObject struct {
 }
 
 type Token struct {
-	DisplayName    string   `json:"displayName"`
-	Expiration     string   `json:"validTo"`
-	IsValid        bool     `json:"isValid"`
-	Scope          string   `json:"scope"`
-	TargetAccounts []string `json:"targetAccounts"`
+	DisplayName    string    `json:"displayName"`
+	Expiration     time.Time `json:"validTo"`
+	IsValid        bool      `json:"isValid"`
+	Scope          string    `json:"scope"`
+	TargetAccounts []string  `json:"targetAccounts"`
 }

@@ -24,7 +24,7 @@ func printOutput(tokens []Token, flags Flags) {
 			fmt.Fprintln(w,
 				token.DisplayName, "\t",
 				token.IsValid, "\t",
-				token.Expiration, "\t",
+				token.Expiration.Format("2006-01-02 15:04:05"), "\t",
 				token.Scope, "\t",
 				token.TargetAccounts)
 		}
