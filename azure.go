@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -20,6 +21,8 @@ func getTokens(token string, organization string, filter string) []Token {
 		"api-version=7.0-preview.1",
 	}
 
+	encodedToken := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:none", token)))
+
 	url := fmt.Sprintf(
 		"https://vssps.dev.azure.com/%s/_apis/Token/SessionTokens?%s",
 		organization,
@@ -28,7 +31,7 @@ func getTokens(token string, organization string, filter string) []Token {
 	client := http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	headers := http.Header{
-		"Authorization": []string{fmt.Sprintf("Basic %s", token)},
+		"Authorization": []string{fmt.Sprintf("Basic %s", encodedToken)},
 	}
 	req.Header = headers
 

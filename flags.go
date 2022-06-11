@@ -15,9 +15,9 @@ func loadFlags() Flags {
 		"",
 		"The organization the token was created in (*Required)")
 	filterPtr := flag.String(
-		"name",
+		"filter",
 		"",
-		"The name of the token(s) to find")
+		"Optional filter for token display names")
 	outputPtr := flag.String(
 		"output",
 		"table",
