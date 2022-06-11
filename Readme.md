@@ -7,7 +7,7 @@ ado-tokens --help
 ```
 For example.
 ``` shell
-ado-tokens --token xxxxxxx --org cotv --filter my-test-token --output table
+ado-tokens --token xxxxxxx --org cotv --filter my-test-token --output table --valid_only
 > DisplayName    IsValid  Expiration           Scope                  TargetAccounts
 > my-test-token  true     2022-05-20 19:33:01  vso.code               [00000000-0000-0000-0000-000000000000]
 > my-test-token  true     2022-08-11 19:41:59  vso.code vso.project   [00000000-0000-0000-0000-000000000000]
