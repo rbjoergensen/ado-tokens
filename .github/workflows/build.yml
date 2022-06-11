@@ -45,7 +45,6 @@ jobs:
       - name: Build project
         run: |
           go build
-          ls
       - uses: actions/upload-artifact@v3
         name: Upload artifact
         with:
@@ -68,7 +67,6 @@ jobs:
       - name: Build project
         run: |
           go build
-          ls
       - uses: actions/upload-artifact@v3
         name: Upload artifact
         with:
@@ -86,7 +84,11 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
         with:
-          name: test-app-${{ needs.calculate-version.outputs.semVer }}
+          name: ado-tokens-${{ needs.calculate-version.outputs.semVer }}-windows
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: ado-tokens-${{ needs.calculate-version.outputs.semVer }}-linux
 
       - uses: ncipollo/release-action@v1
         name: Create release
