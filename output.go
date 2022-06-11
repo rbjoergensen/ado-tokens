@@ -8,19 +8,19 @@ import (
 	"text/tabwriter"
 )
 
-func printOutput(tokens []Token, format string) {
+func printOutput(tokens []Token, flags Flags) {
 	w := tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', 0)
 
-	if format == "table" {
+	if flags.Output == "table" {
 		fmt.Fprintln(w, "DisplayName\t IsValid\t Expiration\t Scope\t TargetAccounts")
 	}
 
 	for _, token := range tokens {
-		if !contains([]string{"json", "table"}, format) {
-			log.Fatal(format, " is not an option for output")
+		if !contains([]string{"json", "table"}, flags.Output) {
+			log.Fatal(flags.Output, " is not an option for output")
 		}
 
-		if format == "table" {
+		if flags.Output == "table" {
 			fmt.Fprintln(w,
 				token.DisplayName, "\t",
 				token.IsValid, "\t",
@@ -32,7 +32,7 @@ func printOutput(tokens []Token, format string) {
 
 	w.Flush()
 
-	if format == "json" {
+	if flags.Output == "json" {
 		jsonString, err := json.Marshal(tokens)
 		if err != nil {
 			log.Fatal(err)

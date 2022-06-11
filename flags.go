@@ -18,6 +18,10 @@ func loadFlags() Flags {
 		"filter",
 		"",
 		"Optional filter for token display names")
+	validOnlyPtr := flag.Bool(
+		"valid_only",
+		false,
+		"Only return tokens that are still valid")
 	outputPtr := flag.String(
 		"output",
 		"table",
@@ -36,6 +40,7 @@ func loadFlags() Flags {
 		Token:        *tokenPtr,
 		Organization: *organizationPtr,
 		Filter:       *filterPtr,
+		ValidOnly:    *validOnlyPtr,
 		Output:       *outputPtr,
 	}
 }
@@ -44,5 +49,6 @@ type Flags struct {
 	Token        string
 	Organization string
 	Filter       string
+	ValidOnly    bool
 	Output       string
 }

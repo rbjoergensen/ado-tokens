@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func getTokens(token string, organization string, filter string) []Token {
+func getTokens(flags Flags) []Token {
 	params := []string{
 		"displayFilterOption=1",
 		"createdByOption=3",
@@ -21,11 +21,11 @@ func getTokens(token string, organization string, filter string) []Token {
 		"api-version=7.0-preview.1",
 	}
 
-	encodedToken := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:none", token)))
+	encodedToken := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:none", flags.Token)))
 
 	url := fmt.Sprintf(
 		"https://vssps.dev.azure.com/%s/_apis/Token/SessionTokens?%s",
-		organization,
+		flags.Organization,
 		strings.Join(params, "&"))
 
 	client := http.Client{}
@@ -54,6 +54,10 @@ func getTokens(token string, organization string, filter string) []Token {
 	var filteredTokens []Token
 
 	for _, token := range tokenList.Value {
+		if flags.ValidOnly && !token.IsValid {
+			continue
+		}
+
 		dateString, err := time.Parse("2006-01-02T15:04:05", strings.Split(token.Expiration, ".")[0])
 
 		if err != nil {
@@ -68,9 +72,9 @@ func getTokens(token string, organization string, filter string) []Token {
 			TargetAccounts: token.TargetAccounts,
 		}
 
-		if filter == "" {
+		if flags.Filter == "" {
 			filteredTokens = append(filteredTokens, tokenFormatted)
-		} else if token.DisplayName == filter {
+		} else if token.DisplayName == flags.Filter {
 			filteredTokens = append(filteredTokens, tokenFormatted)
 		}
 	}
