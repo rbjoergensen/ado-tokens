@@ -1,0 +1,19 @@
+mode: Mainline
+
+commit-message-incrementing: Enabled
+major-version-bump-message: '\+semver:\s?(breaking|major)'
+minor-version-bump-message: '\+semver:\s?(feature|minor)'
+patch-version-bump-message: '\+semver:\s?(fix|patch)'
+
+branches:
+  main:
+    tag: ''
+    regex: ^master$|^main$
+    increment: Patch
+    is-release-branch: true
+  pull-request:
+    regex: ^(pull|pull\-requests|pr)[/-]
+    tag: pr
+    increment: Inherit
+    is-release-branch: false
+    is-mainline: false
