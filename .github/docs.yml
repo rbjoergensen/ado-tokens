@@ -1,0 +1,6 @@
+navigatorName: Azure DevOps Token CLI
+category: Terraform
+includeLink: true
+files:
+- file: Readme.md
+  prettyName: Readme
