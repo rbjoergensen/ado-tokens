@@ -82,11 +82,11 @@ jobs:
       - build_windows
       - build_linux
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4.1.7
         with:
           name: ado-tokens-${{ needs.calculate-version.outputs.semVer }}-windows
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4.1.7
         with:
           name: ado-tokens-${{ needs.calculate-version.outputs.semVer }}-linux
 
